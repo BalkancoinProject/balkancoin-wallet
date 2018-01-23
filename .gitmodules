@@ -5,3 +5,4 @@
 [submodule "cryptonote"]
 	path = cryptonote
 	url = https://github.com/zlatkomajstor/balkancoin.git
+	branch = win32
