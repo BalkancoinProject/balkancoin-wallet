@@ -8,6 +8,7 @@
 
 #include <QCloseEvent>
 #include <QFileDialog>
+#include <QStandardPaths>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QSystemTrayIcon>
@@ -108,7 +109,7 @@ void MainWindow::connectToSignals() {
   connect(&WalletAdapter::instance(), &WalletAdapter::walletTransactionCreatedSignal, this, [this]() {
       QApplication::alert(this);
   });
-  
+
   connect(&NodeAdapter::instance(), &NodeAdapter::peerCountUpdatedSignal, this, &MainWindow::peerCountUpdated, Qt::QueuedConnection);
   connect(m_ui->m_exitAction, &QAction::triggered, qApp, &QApplication::quit);
   connect(m_ui->m_accountFrame, &AccountFrame::showQRcodeSignal, this, &MainWindow::onShowQR, Qt::QueuedConnection);
@@ -296,7 +297,9 @@ bool MainWindow::event(QEvent* _event) {
 void MainWindow::createWallet() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("New wallet file"),
   #ifdef Q_OS_WIN
-      QApplication::applicationDirPath(),
+      //QApplication::applicationDirPath(),
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+
   #else
       QDir::homePath(),
   #endif
@@ -324,7 +327,8 @@ void MainWindow::createWallet() {
 void MainWindow::createNonDeterministicWallet() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("New wallet file"),
   #ifdef Q_OS_WIN
-      QApplication::applicationDirPath(),
+      //QApplication::applicationDirPath(),
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
   #else
       QDir::homePath(),
   #endif
@@ -352,7 +356,8 @@ void MainWindow::createNonDeterministicWallet() {
 void MainWindow::openWallet() {
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open .wallet/.keys file"),
 #ifdef Q_OS_WIN
-    QApplication::applicationDirPath(),
+    //QApplication::applicationDirPath(),
+      QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
 #else
     QDir::homePath(),
 #endif
@@ -432,8 +437,8 @@ void MainWindow::importTrackingKey() {
       return;
     }
 
-    if (!filePath.endsWith(".trackingwallet")) {
-      filePath.append(".trackingwallet");
+    if (!filePath.endsWith(".wallet")) {
+      filePath.append(".wallet");
     }
 
     CryptoNote::AccountKeys keys;
@@ -591,7 +596,8 @@ void MainWindow::showStatusInfo() {
 void MainWindow::backupWallet() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("Backup wallet to..."),
   #ifdef Q_OS_WIN
-      QApplication::applicationDirPath(),
+      //QApplication::applicationDirPath(),
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
   #else
       QDir::homePath(),
   #endif

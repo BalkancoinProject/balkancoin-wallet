@@ -7,6 +7,7 @@
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QStandardPaths>
 
 #include "ImportTrackingKeyDialog.h"
 
@@ -32,15 +33,16 @@ QString ImportTrackingKeyDialog::getFilePath() const {
 void ImportTrackingKeyDialog::selectPathClicked() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("Tracking wallet file"),
 #ifdef Q_OS_WIN
-    QApplication::applicationDirPath(),
+    //QApplication::applicationDirPath(),
+      QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
 #else
     QDir::homePath(),
 #endif
-    tr("Tracking wallets (*.trackingwallet)")
+    tr("Tracking wallets (*.wallet)")
     );
 
-  if (!filePath.isEmpty() && !filePath.endsWith(".trackingwallet")) {
-    filePath.append(".trackingwallet");
+  if (!filePath.isEmpty() && !filePath.endsWith(".wallet")) {
+    filePath.append(".wallet");
   }
 
   m_ui->m_pathEdit->setText(filePath);

@@ -27,6 +27,7 @@ public:
   QString formatAmount(quint64 _amount) const;
   quint64 parseAmount(const QString& _amountString) const;
   bool validateAddress(const QString& _address) const;
+  QString generatePaymentId() const;
   CryptoNote::AccountPublicAddress internalAddress(const QString& _address) const;
 
 private:

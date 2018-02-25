@@ -4,6 +4,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <crypto/crypto.h>
+#include <Common/StringTools.h>
 #include "CurrencyAdapter.h"
 #include "CryptoNoteWalletConfig.h"
 #include "LoggerAdapter.h"
@@ -118,6 +120,12 @@ CryptoNote::AccountPublicAddress CurrencyAdapter::internalAddress(const QString&
     // Error message
   }
   return internalAddress;
+}
+
+QString CurrencyAdapter::generatePaymentId() const {
+  Crypto::Hash payment_id;
+  payment_id = Crypto::rand<Crypto::Hash>();
+  return QString::fromStdString(Common::podToHex(payment_id));
 }
 
 }

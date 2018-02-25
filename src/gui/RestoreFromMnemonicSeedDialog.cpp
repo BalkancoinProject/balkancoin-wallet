@@ -7,6 +7,7 @@
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QStandardPaths>
 #include "RestoreFromMnemonicSeedDialog.h"
 #include "ui_restorefrommnemonicseeddialog.h"
 
@@ -30,7 +31,8 @@ QString RestoreFromMnemonicSeedDialog::getFilePath() const {
 void RestoreFromMnemonicSeedDialog::selectPathClicked() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("Wallet file"),
 #ifdef Q_OS_WIN
-    QApplication::applicationDirPath(),
+    //QApplication::applicationDirPath(),
+      QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
 #else
     QDir::homePath(),
 #endif
